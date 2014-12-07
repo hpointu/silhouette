@@ -1,0 +1,95 @@
+<LoadImageScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MyFileChooser:
+            id: filename
+            size_hint_y: 5
+            on_submit: root.on_submit()
+
+<ColorScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        ColorPicker:
+            id: bg_color
+            size_hint_y: 6
+        Button:
+            text: 'return'
+            on_press: root.on_submit()
+
+<SelectorScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: "Image :"
+
+            TextInput:
+                id: image_filename
+                size_hint_x: 3
+
+            Button:
+                text: 'browse'
+                on_press: root.manager.current = 'load_image'
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Button:
+                text: 'Background color'
+                background_color: root.bg_color
+                on_press: root.manager.current = 'color'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: "Delay : %1.2f" % delay.value
+
+            Slider:
+                id: delay
+                min: 0.01
+                max: 1
+                value: .2
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: "NB Rows : %d" % nb_row.value
+
+            Slider:
+                id: nb_row
+                min: 1
+                max: 28
+                value: 4
+                step: 1
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: "NB Columns : %d" % nb_col.value
+
+            Slider:
+                id: nb_col
+                min: 1
+                max: 28
+                value: 4
+                step: 1
+
+
+        Button:
+            text: 'View animation'
+            on_press: root.manager.show_view()
+
+<ViewScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        id: layout
+
+        canvas.before:
+            Color:
+                rgba: root.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
