@@ -52,6 +52,7 @@
                 min: 0.01
                 max: 1
                 value: .2
+                step: .05
 
         BoxLayout:
             orientation: 'horizontal'
@@ -75,6 +76,18 @@
                 min: 1
                 max: 28
                 value: 4
+                step: 1
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: "Row to anim : %d" % row_id.value
+
+            Slider:
+                id: row_id
+                min: 1
+                max: nb_row.value
+                value: 1
                 step: 1
 
 

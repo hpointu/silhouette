@@ -11,13 +11,14 @@ class AnimatedSprite(Widget):
     current_row = NumericProperty(0)
 
     def __init__(self, filename, nb_row, nb_col, width=None, height=None,
-                 delay=0.2, **kwargs):
+                 delay=0.2, row=0, **kwargs):
         super(AnimatedSprite, self).__init__(**kwargs)
 
         self.image = CoreImage(filename)
 
         self.nb_row = nb_row
         self.nb_col = nb_col
+        self.current_row = row
         self._width = width or (self.image.texture.width/nb_col)
         self._height = height or (self.image.texture.height/nb_row)
 
@@ -38,7 +39,7 @@ class AnimatedSprite(Widget):
 
     def get_region(self, index):
         return self.image.texture.get_region(
-            index * self._width, 0,
+            index * self._width, self.current_row*self._height,
             self._width, self._height
         )
 
@@ -53,6 +54,7 @@ class AnimatedSprite(Widget):
 
     def update(self, *args):
         self.rect.texture = self.texture
+        self.rect.size = (self._width, self._height)
         self.rect.pos = (
             self.center_x - (self._width/2),
             self.center_y - (self._height/2)
