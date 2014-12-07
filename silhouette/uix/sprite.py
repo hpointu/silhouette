@@ -10,17 +10,21 @@ class AnimatedSprite(Widget):
     current_col = NumericProperty(0)
     current_row = NumericProperty(0)
 
-    def __init__(self, filename, nb_row, nb_col, width=None, height=None,
-                 delay=0.2, row=0, **kwargs):
+    def __init__(self, row=0, delay=None,
+                 filename=None, nb_row=None,
+                 nb_col=None, width=None, height=None,
+                 **kwargs):
         super(AnimatedSprite, self).__init__(**kwargs)
 
-        self.image = CoreImage(filename)
+        if filename:
+            self.image = CoreImage(filename)
 
-        self.nb_row = nb_row
-        self.nb_col = nb_col
+        self.delay = delay or self.delay or 0.2
+        self.nb_row = nb_row or self.nb_row
+        self.nb_col = nb_col or self.nb_col
         self.current_row = row
-        self._width = width or (self.image.texture.width/nb_col)
-        self._height = height or (self.image.texture.height/nb_row)
+        self._width = width or (self.image.texture.width/self.nb_col)
+        self._height = height or (self.image.texture.height/self.nb_row)
 
         self.bind(texture=self.update)
         self.bind(current_row=self.update_texture)
@@ -28,7 +32,7 @@ class AnimatedSprite(Widget):
         self.bind(pos=self.update)
         self.bind(size=self.update)
 
-        Clock.schedule_interval(self.update_current_action, delay)
+        Clock.schedule_interval(self.update_current_action, self.delay)
 
         with self.canvas.after:
             self.rect = Rectangle(

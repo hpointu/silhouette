@@ -55,7 +55,7 @@ class ViewScreen(Screen):
         self.ids.layout.clear_widgets()
         self.ids.layout.add_widget(
             AnimatedSprite(
-                filename,
+                filename=filename,
                 nb_col=nb_col, nb_row=nb_row,
                 delay=delay, row=row
             )

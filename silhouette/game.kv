@@ -1,11 +1,24 @@
 <MainWindow>:
     orientation: 'vertical'
-    padding: 300, 300, 300, 50
+    padding: 300, 100, 300, 50
+    spacing: 10
 
-    Button:
-        text: 'Play'
-    Button:
-        text: 'Options'
-    Button:
-        text: 'Exit'
-        on_press: exit()
+    canvas:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            size: self.pos
+            size: self.size
+
+    Cell
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Button:
+            text: 'Play'
+        Button:
+            text: 'Options'
+        Button:
+            text: 'Exit'
+            on_press: exit()

@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from silhouette.game.sprites import Cell
 
 
 class MainWindow(BoxLayout):
