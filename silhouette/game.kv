@@ -22,3 +22,28 @@
         Button:
             text: 'Exit'
             on_press: exit()
+
+<LevelIcon>:
+    text: self.level.name
+    text_size: self.size
+    halign: 'center'
+    padding_y: 10
+
+    canvas.before:
+        Color:
+            rgb: (.1, .1, .1) if self.state == 'normal' else (.1, .2, .1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgb: 1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.icon_texture.size
+            texture: self.icon_texture
+#
+#    Image:
+#        source: root.level.icon
+#        pos: root.center_x - self.width/2, root.center_y - self.height/2
+#    background_normal: self.level.icon
+#    background_down: self.level.icon

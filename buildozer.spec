@@ -26,7 +26,7 @@ source.include_exts = py,png,jpg,kv,atlas
 
 # (str) Application versioning (method 1)
 version.regex = __version__ = ['"](.*)['"]
-version.filename = %(source.dir)s/__init__.py
+version.filename = %(source.dir)s/silhouette/__init__.py
 
 # (str) Application versioning (method 2)
 # version = 1.2.0

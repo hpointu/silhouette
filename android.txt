@@ -1,0 +1,3 @@
+title=Silhouette
+author=Silhouette
+orientation=landscape
