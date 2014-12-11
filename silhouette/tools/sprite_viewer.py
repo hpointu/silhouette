@@ -5,6 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.screenmanager import Screen, ScreenManager
 from silhouette.uix.sprite import AnimatedSprite
+from kivy.core.image import Image
 
 
 class SelectorScreen(Screen):
@@ -52,17 +53,14 @@ class ViewScreen(Screen):
         # self.bg_color = get_color_from_hex(bg_color)
         self.bg_color = bg_color
 
-        self.ids.layout.clear_widgets()
-        self.ids.layout.add_widget(
-            AnimatedSprite(
-                filename=filename,
-                nb_col=nb_col, nb_row=nb_row,
-                delay=delay, row=row
-            )
+        s = AnimatedSprite(
+            Image(filename,).texture,
+            nb_col=nb_col, nb_row=nb_row,
+            delay=delay, row=row, size_hint=(None, None)
         )
-        b = Button(size_hint_y=.2, text='return')
-        self.ids.layout.add_widget(b)
-        b.bind(on_press=self.return_to_home)
+
+        self.ids.container.clear_widgets()
+        self.ids.container.add_widget(s)
 
     def return_to_home(self, *args):
         self.manager.current = 'selector'

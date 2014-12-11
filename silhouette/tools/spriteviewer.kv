@@ -106,3 +106,15 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
+            Color:
+                rgba: 1,1,1,1
+
+        AnchorLayout:
+            id: container
+            anchor_x: 'center'
+            anchor_y: 'center'
+
+        Button:
+            size_hint_y: .2
+            text: 'return'
+            on_press: root.return_to_home()

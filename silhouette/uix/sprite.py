@@ -10,21 +10,20 @@ class AnimatedSprite(Widget):
     current_col = NumericProperty(0)
     current_row = NumericProperty(0)
 
-    def __init__(self, row=0, delay=None,
-                 filename=None, nb_row=None,
-                 nb_col=None, width=None, height=None,
+    def __init__(self, sprite_sheet, nb_row, nb_col,
+                 row=0, delay=0.2,
+                 width=None, height=None,
                  **kwargs):
         super(AnimatedSprite, self).__init__(**kwargs)
 
-        if filename:
-            self.image = CoreImage(filename)
+        self.sprite_sheet = sprite_sheet
 
-        self.delay = delay or self.delay or 0.2
-        self.nb_row = nb_row or self.nb_row
-        self.nb_col = nb_col or self.nb_col
+        self.delay = delay
+        self.nb_row = nb_row
+        self.nb_col = nb_col
         self.current_row = row
-        self._width = width or (self.image.texture.width/self.nb_col)
-        self._height = height or (self.image.texture.height/self.nb_row)
+        self.width = width or (self.sprite_sheet.width/self.nb_col)
+        self.height = height or (self.sprite_sheet.height/self.nb_row)
 
         self.bind(texture=self.update)
         self.bind(current_row=self.update_texture)
@@ -41,10 +40,12 @@ class AnimatedSprite(Widget):
                 size=self.size
             )
 
+        self.update_texture()
+
     def get_region(self, index):
-        return self.image.texture.get_region(
-            index * self._width, self.current_row*self._height,
-            self._width, self._height
+        return self.sprite_sheet.get_region(
+            index * self.width, self.current_row*self.height,
+            self.width, self.height
         )
 
     def update_texture(self, *args):
@@ -58,8 +59,8 @@ class AnimatedSprite(Widget):
 
     def update(self, *args):
         self.rect.texture = self.texture
-        self.rect.size = (self._width, self._height)
+        self.rect.size = (self.width, self.height)
         self.rect.pos = (
-            self.center_x - (self._width/2),
-            self.center_y - (self._height/2)
+            self.center_x - (self.width/2),
+            self.center_y - (self.height/2)
         )
