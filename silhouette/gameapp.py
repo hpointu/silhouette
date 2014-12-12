@@ -1,71 +1,48 @@
+import cymunk as pymunk
 from kivy.app import App
-from kivy.core.image import Image as CoreImage
-from kivy.metrics import dp
-from kivy.properties import ObjectProperty, ListProperty, AliasProperty
-from kivy.uix.behaviors import ButtonBehavior
+from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.widget import Widget
-from silhouette.game import level
-from silhouette.game.sprites import Cell
+from silhouette.game.entity import Entity
+
+FRAME_RATE = 1.0/50.0
 
 
 class MainWindow(BoxLayout):
     pass
 
 
-class LevelIcon(ButtonBehavior, Label):
-    level = ObjectProperty(None)
-    icon_image = ObjectProperty(None, allownone=True)
-
+class GameTest(Widget):
     def __init__(self, **kwargs):
-        super(LevelIcon, self).__init__(**kwargs)
-        self.icon_image = CoreImage(kwargs.get('icon_texture').icon)
+        super(GameTest, self).__init__(**kwargs)
 
-    def get_icon_texture(self):
-        return self.icon_image.texture
+        self.entity = Entity()
+        self.space = pymunk.Space()
+        self.init_scene()
 
-    def set_icon_texture(self, x):
-        pass
+        Clock.schedule_interval(self.update, FRAME_RATE)
 
-    icon_texture = AliasProperty(get_icon_texture, set_icon_texture,
-                                 bind=['level', 'icon_image'])
+    def init_scene(self):
 
+        self.space.gravity = 0, -10
 
-class LevelSelect(BoxLayout):
-    available_levels = [
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular(),
-        level.Cellular()
-    ]
+        self.entity.pos = (10, 10)
+        self.add_widget(self.entity.sprite)
 
-    def __init__(self, **kwargs):
-        super(LevelSelect, self).__init__(**kwargs)
-        self.orientation = 'vertical'
-        # setup widgets
-        self.grid = GridLayout(cols=4, rows=2,
-                               spacing=dp(10), padding=dp(10),
-                               size_hint_y=9)
+        self.space.add(self.entity.body, self.entity.shape)
 
+    def update(self, dt):
+        """
+        Uptade state of the game
+        """
+        speed_factor = dt/FRAME_RATE
 
-        # add widgets
-        self.add_widget(Label(text='Choose your level', font_size=20))
-        self.add_widget(self.grid)
+        self.space.step(dt)
 
-
-        self.populate_levels()
-
-    def populate_levels(self):
-        for l in self.available_levels:
-            self.grid.add_widget(LevelIcon(level=l))
+        # update entity
+        self.entity.tick()
 
 
 class GameApp(App):
     def build(self):
-        return LevelSelect()
+        return GameTest()
